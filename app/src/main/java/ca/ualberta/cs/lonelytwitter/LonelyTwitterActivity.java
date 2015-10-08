@@ -26,77 +26,77 @@ import com.google.gson.reflect.TypeToken;
 
 public class LonelyTwitterActivity extends Activity {
 
-	private static final String FILENAME = "file.sav";
-	private EditText bodyText;
-	private ArrayList<Tweet> tweets = new ArrayList<Tweet>();
-	private ListView oldTweetsList;
-	private ArrayAdapter<Tweet> adapter;
+	private static final String FILENAME = "file.sav"; //model
+	private EditText bodyText;	//model
+	private ArrayList<Tweet> tweets = new ArrayList<Tweet>(); //model
+	private ListView oldTweetsList; //model
+	private ArrayAdapter<Tweet> adapter; //controller
 
 	/** Called when the activity is first created. */
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) { //view
 
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+		super.onCreate(savedInstanceState); //view
+		setContentView(R.layout.main);  //view
 
-		bodyText = (EditText) findViewById(R.id.body);
-		Button saveButton = (Button) findViewById(R.id.save);
-		oldTweetsList = (ListView) findViewById(R.id.oldTweetsList);
+		bodyText = (EditText) findViewById(R.id.body); //model
+		Button saveButton = (Button) findViewById(R.id.save); //model
+		oldTweetsList = (ListView) findViewById(R.id.oldTweetsList); //model
 
 		saveButton.setOnClickListener(new View.OnClickListener() {
 
-			public void onClick(View v) {
-				setResult(RESULT_OK);
-				String text = bodyText.getText().toString();
-				tweets.add(new NormalTweet(text));
-				saveInFile();
-				adapter.notifyDataSetChanged();
+			public void onClick(View v) { //controller
+				setResult(RESULT_OK); //model?
+				String text = bodyText.getText().toString(); //model
+				tweets.add(new NormalTweet(text)); //model
+				saveInFile();					//model
+				adapter.notifyDataSetChanged(); //view
 
 			}
 		});
 	}
 
 	@Override
-	protected void onStart() {
+	protected void onStart() { //view
 		// TODO Auto-generated method stub
-		super.onStart();
-		loadFromFile();
-		adapter = new ArrayAdapter<Tweet>(this,
+		super.onStart(); //view
+		loadFromFile();	//model
+		adapter = new ArrayAdapter<Tweet>(this, //controller
 				R.layout.list_item, tweets);
-		oldTweetsList.setAdapter(adapter);
-		adapter.notifyDataSetChanged();
+		oldTweetsList.setAdapter(adapter); //view
+		adapter.notifyDataSetChanged(); //view
 	}
 
-	private void loadFromFile() {
+	private void loadFromFile() { //model
 		try {
-			FileInputStream fis = openFileInput(FILENAME);
-			BufferedReader in = new BufferedReader(new InputStreamReader(fis));
-			Gson gson = new Gson();
+			FileInputStream fis = openFileInput(FILENAME); //model
+			BufferedReader in = new BufferedReader(new InputStreamReader(fis)); //model
+			Gson gson = new Gson(); //model
 			// https://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/com/google/gson/Gson.html, 2015-09-23
-			Type arraylistType = new TypeToken<ArrayList<NormalTweet>>() {}.getType();
-			tweets = gson.fromJson(in, arraylistType);
+			Type arraylistType = new TypeToken<ArrayList<NormalTweet>>() {}.getType(); //model
+			tweets = gson.fromJson(in, arraylistType); //controller
 
-		} catch (FileNotFoundException e) {
-			tweets = new ArrayList<Tweet>();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+		} catch (FileNotFoundException e) { //model
+			tweets = new ArrayList<Tweet>(); //model
+		} catch (IOException e) { //model
+			throw new RuntimeException(e); //model
 		}
 	}
 	
-	private void saveInFile() {
+	private void saveInFile() { //model
 		try {
-			FileOutputStream fos = openFileOutput(FILENAME, 0);
-			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
-			Gson gson = new Gson();
-			gson.toJson(tweets, out);
-			out.flush();
-			fos.close();
-		} catch (FileNotFoundException e) {
+			FileOutputStream fos = openFileOutput(FILENAME, 0); //model
+			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos)); //model
+			Gson gson = new Gson(); //model
+			gson.toJson(tweets, out); //controller
+			out.flush(); //controller
+			fos.close(); //controller
+		} catch (FileNotFoundException e) { //model
 			// TODO Auto-generated catch block
-			throw new RuntimeException(e);
-		} catch (IOException e) {
+			throw new RuntimeException(e); //model
+		} catch (IOException e) { //model
 			// TODO Auto-generated catch block
-			throw new RuntimeException(e);
+			throw new RuntimeException(e); //model
 		}
 	}
 }

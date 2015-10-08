@@ -2,11 +2,17 @@ package ca.ualberta.cs.lonelytwitter;
 
 import android.test.ActivityInstrumentationTestCase2;
 
+import java.util.ArrayList;
+
 
 /**
  * Created by romansky on 9/30/15.
  */
-public class TweetListTest extends ActivityInstrumentationTestCase2 {
+public class TweetListTest extends ActivityInstrumentationTestCase2 implements MyObserver {
+    private boolean wasNotified = false;
+
+
+
     public TweetListTest() {
         super(LonelyTwitterActivity.class);
     }
@@ -50,5 +56,25 @@ public class TweetListTest extends ActivityInstrumentationTestCase2 {
 
     public void testGetTweetType() {
 
+    }
+
+    private ArrayList<MyObservable> observables = new ArrayList<MyObservable>();
+
+
+
+    public void testTweetListChanged(){
+        TweetList tweetList = new TweetList();
+        Tweet tweet = new NormalTweet("hihihihi");
+        tweetList.addObserver(this);
+        wasNotified=false;
+        assertFalse(wasNotified);
+        tweetList.add(tweet);
+        assertTrue(wasNotified);
+
+    }
+
+
+    public void myNotify() {
+        wasNotified = true;
     }
 }
